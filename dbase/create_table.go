@@ -7,35 +7,27 @@ import (
 	"time"
 )
 
-type DbLogger struct {
+type DbConn struct {
 	db *sql.DB
 }
 
-
-func New(dsn string) (*DbLogger, error) {
+//Return new DbConn struct with set parameters
+func New(dsn string) (*DbConn, error) {
 
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
 		return nil, err
 	}
-	return &DbLogger{db:db}, err
-
-}
-
-func (m DbLogger)CreateTable(ctx context.Context){
-
-	//db, err := sql.Open("mysql", "root:root@/sensors")
-/*
-	if err != nil {
-		fmt.Println("Could not find the database")
-	}
-
-	defer db.Close()
-	
 	db.SetConnMaxLifetime(time.Minute * 3)
 	db.SetMaxOpenConns(10)
 	db.SetMaxIdleConns(10)
-*/	
+	return &DbConn{db:db}, err
+
+}
+
+// CreateTable only needs to be run to create a table if it doesnt exist for sensor types
+func (m DbConn)CreateTable(ctx context.Context){
+	
     query := `CREATE TABLE IF NOT EXISTS
 	sensortype(
 		id int primary key auto_increment,
