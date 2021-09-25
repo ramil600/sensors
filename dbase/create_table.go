@@ -3,7 +3,6 @@ package dbase
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	"log"
 	"time"
 )

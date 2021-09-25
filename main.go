@@ -2,13 +2,8 @@ package main
 
 import (
 	"context"
-	"database/sql"
-	"dbase"
 	"fmt"
-	"go-with-compose/sensors/dbase"
-	"log"
-	"time"
-
+	"github.com/ramil600/sensors/dbase"
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -19,12 +14,12 @@ func main(){
 	if err != nil {
 		fmt.Println("Could not find the database")
 	}
-
-	defer dblogger.db.Close()
 	
+	/*
 	dblogger.db.SetConnMaxLifetime(time.Minute * 3)
 	dblogger.db.SetMaxOpenConns(10)
 	dblogger.db.SetMaxIdleConns(10)
+	*/
 
 	dblogger.CreateTable(context.Background())
 
