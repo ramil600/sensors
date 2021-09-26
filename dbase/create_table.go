@@ -1,18 +1,26 @@
 package dbase
 
 import (
-	"context"
+	//"context"
 	"database/sql"
-	"log"
+	//"log"
 	"time"
 )
+
+type Sensor struct {
+	Id int
+	Version int
+	Name string
+	Sensortype string
+	Topic string
+}
 
 type DbConn struct {
 	db *sql.DB
 }
 
-//Return new DbConn struct with set parameters
-func New(dsn string) (*DbConn, error) {
+// New  returns DbConn struct with set parameters
+func New(dsn string) (Connection, error) {
 
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
@@ -24,7 +32,7 @@ func New(dsn string) (*DbConn, error) {
 	return &DbConn{db:db}, err
 
 }
-
+/*
 // CreateTable only needs to be run to create a table if it doesnt exist for sensor types
 func (m DbConn)CreateTable(ctx context.Context){
 	
@@ -52,3 +60,4 @@ func (m DbConn)CreateTable(ctx context.Context){
 	log.Println(rows, "rows affected")
 
 }
+*/
