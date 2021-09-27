@@ -12,11 +12,11 @@ func TestInsertSensor(t *testing.T) {
 	mockConn := new(dbase.MyTestDB)
 	mockConn.On("InsertSensor").Return(dbase.Sensor{Name: "name", Topic: "topic"}, nil)
 
-	myservice, err := service.NewService(mockConn)
+	mytestservice, err := service.NewSensorService(mockConn)
 	if err != nil {
 		log.Fatal(err)
 	}
-	//myservice doesn't know which connection it uses as it deals with Connection interface
-	myservice.CreateSensor(1, "name", "", "")
+	//mytestservice doesn't know which connection it uses as it deals with Connection interface
+	mytestservice.CreateSensor(1, "name", "", "")
 	mockConn.AssertExpectations(t)
 }

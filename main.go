@@ -9,7 +9,7 @@ import (
 
 func main() {
 
-	dbconn, err := dbase.New("root:root@tcp(127.0.0.1:3306)/sensors")
+	dbconn, err := dbase.New(dbase.MYSQL_DSN)
 
 	if err != nil {
 		fmt.Println("Could not find the database")

@@ -4,6 +4,8 @@ import (
 	"log"
 )
 
+const MYSQL_DSN = "root:root@tcp(127.0.0.1:3306)/sensors"
+
 type Connection interface {
 	InsertSensor(int, string, string, string) (Sensor, error)
 	GetSensor(int) (Sensor, error)
