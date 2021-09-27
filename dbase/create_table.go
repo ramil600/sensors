@@ -8,11 +8,11 @@ import (
 )
 
 type Sensor struct {
-	Id int
-	Version int
-	Name string
+	Id         int
+	Version    int
+	Name       string
 	Sensortype string
-	Topic string
+	Topic      string
 }
 
 type DbConn struct {
@@ -29,13 +29,14 @@ func New(dsn string) (Connection, error) {
 	db.SetConnMaxLifetime(time.Minute * 3)
 	db.SetMaxOpenConns(10)
 	db.SetMaxIdleConns(10)
-	return &DbConn{db:db}, err
+	return &DbConn{db: db}, err
 
 }
+
 /*
 // CreateTable only needs to be run to create a table if it doesnt exist for sensor types
 func (m DbConn)CreateTable(ctx context.Context){
-	
+
     query := `CREATE TABLE IF NOT EXISTS
 	sensortype(
 		id int primary key auto_increment,
@@ -56,7 +57,7 @@ func (m DbConn)CreateTable(ctx context.Context){
 	rows, err := res.RowsAffected()
 	if err != nil {
 		log.Println(err)
-	} 
+	}
 	log.Println(rows, "rows affected")
 
 }

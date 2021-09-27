@@ -5,10 +5,9 @@ import (
 )
 
 type Connection interface {
-	InsertSensor(int, string, string, string) (Sensor,error)
-	GetSensor(int) (Sensor,error)
+	InsertSensor(int, string, string, string) (Sensor, error)
+	GetSensor(int) (Sensor, error)
 }
-
 
 //InsertSensor inserts new sensor type into sensortype table
 func (dbc DbConn) InsertSensor(version int, name, sensortype, topic string) (Sensor, error) {
@@ -31,17 +30,17 @@ func (dbc DbConn) InsertSensor(version int, name, sensortype, topic string) (Sen
 	if err != nil {
 		log.Fatal(err)
 	}
-	
+
 	lastID, err := res.LastInsertId()
 	if err != nil {
 		log.Fatal(err)
 	}
-	
+
 	log.Printf("ID= %d, rows affected = %d\n", lastID, rowCnt)
 	s = Sensor{
-		Id: int(lastID),
-		Version: int(version),
-		Name: name,
+		Id:         int(lastID),
+		Version:    int(version),
+		Name:       name,
 		Sensortype: sensortype,
 	}
 
@@ -50,14 +49,14 @@ func (dbc DbConn) InsertSensor(version int, name, sensortype, topic string) (Sen
 }
 
 //GetSensor get sensor from sensor types with Id
-func(dbc DbConn)GetSensor(id int) (Sensor, error) {
+func (dbc DbConn) GetSensor(id int) (Sensor, error) {
 	s := Sensor{}
 	if err := dbc.db.Ping(); err != nil {
 		return s, err
 	}
 	err := dbc.db.QueryRow("SELECT version, name, type, topic FROM sensortype WHERE id = ?", id).
-	Scan(&s.Version, &s.Name, &s.Sensortype, &s.Topic)
-	if err != nil{
+		Scan(&s.Version, &s.Name, &s.Sensortype, &s.Topic)
+	if err != nil {
 		log.Fatal(err)
 	}
 	log.Println(s.Version, s.Name, s.Sensortype, s.Topic)
