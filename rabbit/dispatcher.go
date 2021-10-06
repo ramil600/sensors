@@ -7,6 +7,10 @@ import (
 	"log"
 )
 
+type Dispatcher interface {
+	Apply(context.Context, Command) error
+}
+
 type AmqpDispatcher struct {
 	queuename string
 	channel   *amqp.Channel
