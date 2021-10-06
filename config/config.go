@@ -1,6 +1,5 @@
 package config
 
-import "C"
 import (
 	"github.com/spf13/viper"
 	"log"
