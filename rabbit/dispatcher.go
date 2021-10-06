@@ -44,8 +44,8 @@ func (ad AmqpDispatcher) Apply(ctx context.Context, command Command) error {
 	return nil
 }
 
-func NewDispatcher() Dispatcher {
-	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
+func NewDispatcher(url string) Dispatcher {
+	conn, err := amqp.Dial(url)
 	if err != nil {
 		log.Fatal(err)
 	}

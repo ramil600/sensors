@@ -1,0 +1,2 @@
+db_name: mysql
+publish_dsn: amqp://guest:guest@localhost:5672/
