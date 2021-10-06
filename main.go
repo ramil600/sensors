@@ -18,18 +18,13 @@ func main() {
 			Id: "w3wq-2da2",
 		},
 		Sensortype: "temp_sensor",
-		Name: "livingroom01",
+		Name:       "livingroom01",
 	}
 
-
-	err := dpt.Apply(ctx,cmdCreateSensor)
-
-
+	err := dpt.Apply(ctx, cmdCreateSensor)
 
 	if err != nil {
 		fmt.Println("Could Apply Command on Create Sensor")
 	}
-
-
 
 }

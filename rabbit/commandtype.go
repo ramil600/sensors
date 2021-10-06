@@ -2,7 +2,6 @@ package rabbit
 
 import "context"
 
-
 type Command interface {
 	GetId() string
 }
@@ -10,15 +9,17 @@ type Command interface {
 type CommandModel struct {
 	Id string
 }
+
 func (c CommandModel) GetId() string {
 	return c.Id
 }
+
 type Dispatcher interface {
-	Apply( context.Context, Command) error
+	Apply(context.Context, Command) error
 }
 
 type CreateSensor struct {
-	Name string
+	Name       string
 	Sensortype string
 	CommandModel
 }

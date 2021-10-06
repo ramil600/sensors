@@ -12,8 +12,8 @@ type Event interface {
 }
 
 type EventModel struct {
-	ID string
-	Version int
+	ID        string
+	Version   int
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
@@ -29,12 +29,9 @@ func (m EventModel) EventUpdatedAt() time.Time {
 	return m.UpdatedAt
 }
 
-
-
-
-type SensorCreated struct{
+type SensorCreated struct {
 	EventModel
-	name string
+	name       string
 	sensortype string
 }
 
@@ -46,19 +43,17 @@ type ErrorEvent struct {
 	EventModel
 }
 
-
-
-func EventFromCommand (command Command) Event {
+func EventFromCommand(command Command) Event {
 
 	switch v := command.(type) {
-	case CreateSensor :
+	case CreateSensor:
 		cmd := command.(CreateSensor)
 		evt := SensorCreated{
 			name:       cmd.Name,
 			sensortype: cmd.Sensortype,
 			EventModel: EventModel{
 				ID:        cmd.GetId(),
-				 Version:   0,
+				Version:   0,
 				CreatedAt: time.Now(),
 				UpdatedAt: time.Now(),
 			},

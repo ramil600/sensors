@@ -34,11 +34,10 @@ func Sendmyqueue() {
 		log.Fatal(err)
 	}
 
-
 	for i := 0; i < 100; i++ {
 
 		body0 := WarnEvent{
-			EventModel{ID : strconv.Itoa(i),
+			EventModel{ID: strconv.Itoa(i),
 				CreatedAt: time.Now()},
 		}
 		payload, _ := json.Marshal(&body0)

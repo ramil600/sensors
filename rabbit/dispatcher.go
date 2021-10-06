@@ -7,14 +7,12 @@ import (
 	"log"
 )
 
-
 type AmqpDispatcher struct {
 	queuename string
-	channel *amqp.Channel
+	channel   *amqp.Channel
 }
 
-
-func (ad AmqpDispatcher) Apply (ctx context.Context, command Command) ( error) {
+func (ad AmqpDispatcher) Apply(ctx context.Context, command Command) error {
 	//Build event from Command, command comes as payload from request
 	evt := EventFromCommand(command)
 	if evt == nil {
@@ -28,28 +26,28 @@ func (ad AmqpDispatcher) Apply (ctx context.Context, command Command) ( error) {
 	}
 
 	err = ad.channel.Publish("",
-						ad.queuename,
-						false,
-						false,
-						amqp.Publishing{
-							Body: payload,
-						})
+		ad.queuename,
+		false,
+		false,
+		amqp.Publishing{
+			Body: payload,
+		})
 	if err != nil {
 		log.Fatal("amqp.Channel.Publish could not publish event on the queue")
 	}
 	log.Println("Event is dispatched on ", ad.queuename)
 
-	return  nil
+	return nil
 }
 
-func NewDispatcher () Dispatcher{
-	 conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
-	 if err != nil {
-		 log.Fatal(err)
-	 }
-	 channel, err := conn.Channel()
-	 if err != nil {
+func NewDispatcher() Dispatcher {
+	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
+	if err != nil {
 		log.Fatal(err)
-	 }
+	}
+	channel, err := conn.Channel()
+	if err != nil {
+		log.Fatal(err)
+	}
 	return &AmqpDispatcher{channel: channel}
 }
