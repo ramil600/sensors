@@ -31,8 +31,8 @@ func (m EventModel) EventUpdatedAt() time.Time {
 
 type SensorCreated struct {
 	EventModel
-	name       string
-	sensortype string
+	Name       string
+	Sensortype string
 }
 
 type WarnEvent struct {
@@ -49,8 +49,8 @@ func EventFromCommand(command Command) Event {
 	case CreateSensor:
 		cmd := command.(CreateSensor)
 		evt := SensorCreated{
-			name:       cmd.Name,
-			sensortype: cmd.Sensortype,
+			Name:       cmd.Name,
+			Sensortype: cmd.Sensortype,
 			EventModel: EventModel{
 				ID:        cmd.GetId(),
 				Version:   0,

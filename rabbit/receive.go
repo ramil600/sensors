@@ -40,7 +40,7 @@ func Processmyqueue() {
 		}
 	}()
 
-	log.Println("Wait for messages. To exit press CTRL+C\n")
+	log.Println("Wait for messages. To exit press CTRL+C")
 
 	<-wait
 }
