@@ -3,21 +3,27 @@ package rabbit
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"github.com/stretchr/testify/assert"
 	"log"
 	"testing"
 )
 
-func SetupTest() *AmqpDispatcher {
+func SetupTest() (*AmqpDispatcher, func()) {
 	d := NewDispatcher("amqp://guest:guest@localhost:5672/")
-
-	return d
+	teardown := func() {
+		d.Conn.Close()
+		fmt.Println("Closing connection")
+	}
+	return d, teardown
 
 }
 
 func TestAmqpDispatcher_Apply(t *testing.T) {
 
-	dispatcher := SetupTest()
+	dispatcher, teardown := SetupTest()
+	//Close the connection to dispatcher when test is done
+	defer teardown()
 	// Command we are dispatching
 	createsensor := CreateSensor{
 		Name:       "living area",
@@ -56,14 +62,11 @@ func TestAmqpDispatcher_Apply(t *testing.T) {
 	var unpacked = SensorCreated{}
 	err = json.Unmarshal(msg.Body, &unpacked)
 	if err != nil {
-		log.Fatal("Could not unpack payload from Apply Function")
+		log.Fatal("TestAmqpDispatcher#Apply: Could not unpack payload from Apply Function")
 	}
 	// Assert that sensorcreated event expected is equal to unpacked event from function
 	assert.Equal(t, sensorcreated.ID, unpacked.ID)
 	assert.Equal(t, sensorcreated.Name, unpacked.Name)
 	assert.Equal(t, sensorcreated.Sensortype, unpacked.Sensortype)
-
-	// Close the connection
-	_ = dispatcher.Channel.Close()
 
 }

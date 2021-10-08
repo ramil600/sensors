@@ -17,6 +17,7 @@ type Publisher interface {
 
 type AmqpDispatcher struct {
 	Queuename string
+	Conn      *amqp.Connection
 	Channel   *amqp.Channel
 }
 
@@ -28,18 +29,17 @@ func (ad AmqpDispatcher) Apply(ctx context.Context, command Command) error {
 	}
 
 	q, err := ad.Channel.QueueDeclare(
-		"", //queue name
-		false,   //durable
-		false,   //AutoDelete
-		false,   //exclusive
-		false,   //noWait
+		"",    //queue name
+		false, //durable
+		false, //AutoDelete
+		false, //exclusive
+		false, //noWait
 		nil,
 	)
 	if err != nil {
 		log.Fatal(err)
 	}
 	ad.Queuename = q.Name
-
 
 	//Publish Event on the queue
 	payload, err := json.Marshal(evt)
@@ -71,5 +71,6 @@ func NewDispatcher(url string) *AmqpDispatcher {
 	if err != nil {
 		log.Fatal(err)
 	}
-	return &AmqpDispatcher{Channel: channel}
+	return &AmqpDispatcher{Channel: channel,
+		Conn: conn}
 }
