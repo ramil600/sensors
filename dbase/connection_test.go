@@ -49,8 +49,8 @@ func TestDbConn_InsertSensor(t *testing.T) {
 		db: db,
 	}
 	query := "INSERT INTO sensortype\\(version, name, type, topic\\) VALUES\\(\\?,\\?,\\?,\\?\\)"
-	//rows := sqlmock.NewRows([]string{"version", "name", "type", "topic"}).
-	//	AddRow(sensor.Version, sensor.Name, sensor.Sensortype, sensor.Topic)
+
+
 
 	mock.ExpectPrepare(query).ExpectExec().WithArgs(sensor.Version,sensor.Name, sensor.Sensortype,sensor.Topic).
 		WillReturnResult(sqlmock.NewResult(0,1))
