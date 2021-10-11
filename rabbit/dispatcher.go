@@ -20,7 +20,8 @@ type AmqpDispatcher struct {
 	Conn      *amqp.Connection
 	Channel   *amqp.Channel
 }
-
+// Apply receives command that it needs to update Sensor(C_UD) and fires event on rabbit queue
+// later it can be refactored to receive different objects for this purpose
 func (ad AmqpDispatcher) Apply(ctx context.Context, command Command) error {
 	//Build event from Command, command comes as payload from request
 	evt := EventFromCommand(command)

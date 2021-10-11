@@ -8,6 +8,7 @@ import (
 )
 
 //TestInsertSensor creates service and mock connection to test without db
+
 func TestInsertSensor(t *testing.T) {
 	mockConn := new(dbase.MyTestDB)
 	mockConn.On("InsertSensor").Return(dbase.Sensor{Name: "name", Topic: "topic"}, nil)

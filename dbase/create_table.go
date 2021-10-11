@@ -20,7 +20,7 @@ type DbConn struct {
 }
 
 // New  returns DbConn struct with set parameters
-func New(dsn string) (Connection, error) {
+func New(dsn string) (*DbConn, error) {
 
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {

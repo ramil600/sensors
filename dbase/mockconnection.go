@@ -22,3 +22,8 @@ func (dbc MyTestDB) GetSensor(id int) (Sensor, error) {
 	args := dbc.Called()
 	return args.Get(0).(Sensor), nil
 }
+
+func (dbc MyTestDB) UpdateSensor(id int, version int, name, sensortype, topic string ) (Sensor, error) {
+	args := dbc.Called()
+	return args.Get(0).(Sensor), nil
+}
