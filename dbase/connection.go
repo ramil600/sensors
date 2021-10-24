@@ -1,6 +1,7 @@
 package dbase
 
 import (
+	"database/sql"
 	"log"
 )
 
@@ -82,7 +83,12 @@ func (dbc DbConn) GetSensor(id int) (Sensor, error) {
 	err := dbc.db.QueryRow("SELECT version, name, type, topic FROM sensortype WHERE id = ?", id).
 		Scan(&s.Version, &s.Name, &s.Sensortype, &s.Topic)
 	if err != nil {
-		return s, err
+		// Check if DB does not have sensor with given id
+		if err == sql.ErrNoRows {
+			return Sensor{}, nil
+		} else {
+			return s, err
+		}
 	}
 	log.Println(s.Version, s.Name, s.Sensortype, s.Topic)
 	return s, nil

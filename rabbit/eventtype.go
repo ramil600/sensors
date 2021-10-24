@@ -1,7 +1,6 @@
 package rabbit
 
 import (
-	"log"
 	"time"
 )
 
@@ -35,6 +34,13 @@ type SensorCreated struct {
 	Sensortype string
 }
 
+type SensorUpdated struct {
+	EventModel
+	Name       string
+	Sensortype string
+}
+
+
 type WarnEvent struct {
 	EventModel
 }
@@ -43,25 +49,4 @@ type ErrorEvent struct {
 	EventModel
 }
 
-func EventFromCommand(command Command) Event {
 
-	switch v := command.(type) {
-	case CreateSensor:
-		cmd := command.(CreateSensor)
-		evt := SensorCreated{
-			Name:       cmd.Name,
-			Sensortype: cmd.Sensortype,
-			EventModel: EventModel{
-				ID:        cmd.GetId(),
-				Version:   0,
-				CreatedAt: time.Now(),
-				UpdatedAt: time.Now(),
-			},
-		}
-		log.Println("Command type captured is: ", v)
-		return evt
-	default:
-		log.Println(v)
-		return nil
-	}
-}

@@ -6,6 +6,7 @@ type Command interface {
 
 type CommandModel struct {
 	Id string
+	Type string
 }
 
 func (c CommandModel) GetId() string {
@@ -16,4 +17,10 @@ type CreateSensor struct {
 	Name       string
 	Sensortype string
 	CommandModel
+}
+
+type UpdateSensor struct {
+	CommandModel
+	Name string
+	Sensortype string
 }

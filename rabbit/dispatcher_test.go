@@ -70,3 +70,28 @@ func TestAmqpDispatcher_Apply(t *testing.T) {
 	assert.Equal(t, sensorcreated.Sensortype, unpacked.Sensortype)
 
 }
+func TestEventFromCommand_UpdateSensor(t *testing.T) {
+
+	com := UpdateSensor{
+		Name: "living room",
+		Sensortype: "tempreature",
+		CommandModel: CommandModel{
+			Id: "u313-ds34-su3",
+			Type: "data",
+		},
+	}
+	expected :=
+		SensorUpdated{
+		Name: "living room",
+		Sensortype: "temperature",
+		EventModel: EventModel{
+			ID: "u313-ds34-su3",
+			Version: 0,
+		},
+
+		}
+	actual := EventFromCommand(com)
+
+	assert.Equal(t,expected.ID, actual.GetId())
+
+}
