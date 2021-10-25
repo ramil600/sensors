@@ -21,6 +21,29 @@ type AmqpDispatcher struct {
 	Conn      *amqp.Connection
 	Channel   *amqp.Channel
 }
+//Subscribe listens to messages from events queue and *todo dispatches command
+func (ad AmqpDispatcher) Subscribe(eventqueue string) error {
+	deliveries, _ := ad.Channel.Consume(
+		eventqueue,
+		"",
+		true,
+		true,
+		false,
+		true,
+		nil)
+
+	go func() {
+		for msg := range deliveries{
+			//Generic JSON Command goes here and Create/Update/DeleteSensor command formed
+			event := SensorCreated{}
+			err := json.Unmarshal(msg.Body, &event)
+			if err != nil {
+				log.Println("Message could not be unpacked",err)
+			}
+		}
+	}()
+	return nil
+}
 
 // Apply receives command that it needs to update Sensor(C_UD) and fires event on rabbit queue
 // later it can be refactored to receive different objects for this purpose
@@ -100,7 +123,7 @@ func EventFromCommand(command Command) Event {
 				UpdatedAt: time.Now(),
 			},
 		}
-		log.Println("Command type captured is: ", v)
+
 		return evt
 	case UpdateSensor:
 		cmd := command.(UpdateSensor)
@@ -113,7 +136,16 @@ func EventFromCommand(command Command) Event {
 				UpdatedAt: time.Now(),
 			},
 		}
-		log.Printf("Event is created with type: %T", evt)
+
+		return evt
+
+	case DeleteSensor:
+		cmd := command.(DeleteSensor)
+		evt := SensorDeleted{
+			EventModel{
+				ID: cmd.GetId(),
+			},
+		}
 		return evt
 	default:
 		log.Println(v)

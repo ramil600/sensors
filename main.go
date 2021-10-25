@@ -4,10 +4,17 @@ import (
 	//"github.com/ramil600/sensors/service"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/ramil600/sensors/rabbit"
+)
+const (
+	DISPATCHER_ADDR = "amqp://guest:guest@localhost:5672/"
+	EVENTS_QUEUE = "eventsqueue"
 )
 
 func main() {
 	fmt.Println("hello")
+	dispatcher := rabbit.NewDispatcher(DISPATCHER_ADDR)
+	dispatcher.Subscribe(EVENTS_QUEUE)
     //cfg := config.NewConfig()
 	//
 	//dbconn, err := dbase.New(dbase.MYSQL_DSN)

@@ -40,6 +40,14 @@ type SensorUpdated struct {
 	Sensortype string
 }
 
+type SensorDeleted struct {
+	EventModel
+}
+
+type WrapperEvent struct {
+	Data []byte  `json:"data"`
+	Type string `json:"type"`
+}
 
 type WarnEvent struct {
 	EventModel

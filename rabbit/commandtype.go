@@ -14,13 +14,18 @@ func (c CommandModel) GetId() string {
 }
 
 type CreateSensor struct {
+	CommandModel
 	Name       string
 	Sensortype string
-	CommandModel
+
 }
 
 type UpdateSensor struct {
 	CommandModel
 	Name string
 	Sensortype string
+}
+
+type DeleteSensor struct {
+	CommandModel
 }

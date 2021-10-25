@@ -18,7 +18,7 @@ func SetupTest() (*AmqpDispatcher, func()) {
 	return d, teardown
 
 }
-
+// TestAmqpDispatcher is integration test for testing sending/receiving events on Dispatcher
 func TestAmqpDispatcher_Apply(t *testing.T) {
 
 	dispatcher, teardown := SetupTest()
@@ -68,6 +68,28 @@ func TestAmqpDispatcher_Apply(t *testing.T) {
 	assert.Equal(t, sensorcreated.ID, unpacked.ID)
 	assert.Equal(t, sensorcreated.Name, unpacked.Name)
 	assert.Equal(t, sensorcreated.Sensortype, unpacked.Sensortype)
+
+}
+
+
+func TestAmqpDispatcher_Subscribe(t *testing.T) {
+
+	dispatcher, teardown := SetupTest()
+
+
+	command := CreateSensor{
+		Name: "living area",
+		CommandModel: CommandModel{
+			Id: "ue30-wc24",
+		},
+	}
+
+	dispatcher.Apply(context.Background(), command )
+
+	err := dispatcher.Subscribe(dispatcher.Queuename)
+	assert.NoError(t, err)
+
+	teardown()
 
 }
 func TestEventFromCommand_UpdateSensor(t *testing.T) {
