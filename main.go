@@ -1,21 +1,20 @@
 package main
 
 import (
-	//"github.com/ramil600/sensors/service"
-	"fmt"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/ramil600/sensors/config"
 	"github.com/ramil600/sensors/rabbit"
-)
-const (
-	DISPATCHER_ADDR = "amqp://guest:guest@localhost:5672/"
-	EVENTS_QUEUE = "eventsqueue"
 )
 
 func main() {
-	fmt.Println("hello")
-	dispatcher := rabbit.NewDispatcher(DISPATCHER_ADDR)
-	dispatcher.Subscribe(EVENTS_QUEUE)
-    //cfg := config.NewConfig()
+
+	cfg := config.NewConfig()
+	dispatcher := rabbit.NewDispatcher(cfg.PublishDSN)
+
+	dispatcher.Subscribe(cfg.EventsQueue)
+	dispatcher.Shutdown()
+
+	//cfg := config.NewConfig()
 	//
 	//dbconn, err := dbase.New(dbase.MYSQL_DSN)
 	//if err != nil {
@@ -23,25 +22,6 @@ func main() {
 	//}
 	//
 	//
-	//sensor, err := dbconn.InsertSensor(0,"livingroom","temperature", "dispatcher")
-	//if err != nil {
-	//	log.Fatal(err)
-	//
-	//}
-	//
-	//
-	//
-	//fmt.Println("Sensor was created with id: ", sensor.Id)
-	//
-	//
-	//
-	//
-	//
-	//sensor, err = dbconn.UpdateSensor(sensor.Id, 100, sensor.Name,sensor.Sensortype, sensor.Topic)
-	//
-	//log.Println(sensor.Id)
-	//
-
 	/*
 	dpt := rabbit.NewDispatcher(cfg.PublishDSN)
 	ctx := context.Background()

@@ -8,6 +8,7 @@ import (
 type Config struct {
 	Dbname string `yaml:"db_name"`
 	PublishDSN string `yaml:"publish_dsn"`
+	EventsQueue string `yaml:"events_queue"`
 }
 
 func NewConfig() *Config {
@@ -21,5 +22,6 @@ func NewConfig() *Config {
 	return &Config{
 		PublishDSN: viper.GetString("publish_dsn"),
 		Dbname: viper.GetString("db_name"),
+		EventsQueue: viper.GetString("events_queue"),
 	}
 }

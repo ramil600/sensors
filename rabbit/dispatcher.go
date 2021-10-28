@@ -106,6 +106,9 @@ func NewDispatcher(url string) *AmqpDispatcher {
 
 	return ad
 }
+func (ad *AmqpDispatcher) Shutdown(){
+	ad.Conn.Close()
+}
 
 // EventFromCommand is helper to produce an event from command
 func EventFromCommand(command Command) Event {
