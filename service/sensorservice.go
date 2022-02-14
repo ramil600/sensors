@@ -15,5 +15,4 @@ func NewSensorService(mydb dbase.Connection) (SensorService, error) {
 
 func (s SensorService) CreateSensor(version int, name, sensortype, topic string) {
 	s.db.InsertSensor(version, name, sensortype, topic)
-
 }
