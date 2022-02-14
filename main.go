@@ -12,6 +12,7 @@ func main() {
 	dispatcher := rabbit.NewDispatcher(cfg.PublishDSN)
 
 	dispatcher.Subscribe(cfg.EventsQueue)
+
 	dispatcher.Shutdown()
 
 	//cfg := config.NewConfig()
@@ -23,20 +24,20 @@ func main() {
 	//
 	//
 	/*
-	dpt := rabbit.NewDispatcher(cfg.PublishDSN)
-	ctx := context.Background()
-	cmdCreateSensor := rabbit.CreateSensor{
-		CommandModel: rabbit.CommandModel{
-			Id: "w3wq-2da2",
-		},
-		Sensortype: "temp_sensor",
-		Name:       "livingroom01",
-	}
+		dpt := rabbit.NewDispatcher(cfg.PublishDSN)
+		ctx := context.Background()
+		cmdCreateSensor := rabbit.CreateSensor{
+			CommandModel: rabbit.CommandModel{
+				Id: "w3wq-2da2",
+			},
+			Sensortype: "temp_sensor",
+			Name:       "livingroom01",
+		}
 
-	err := dpt.Apply(ctx, cmdCreateSensor)
+		err := dpt.Apply(ctx, cmdCreateSensor)
 
-	if err != nil {
-		fmt.Println("Could Apply Command on Create Sensor")
-	}
-    */
+		if err != nil {
+			fmt.Println("Could Apply Command on Create Sensor")
+		}
+	*/
 }
