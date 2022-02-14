@@ -3,9 +3,10 @@ package rabbit
 import (
 	"context"
 	"encoding/json"
-	"github.com/streadway/amqp"
 	"log"
 	"time"
+
+	"github.com/streadway/amqp"
 )
 
 type Dispatcher interface {
@@ -21,6 +22,7 @@ type AmqpDispatcher struct {
 	Conn      *amqp.Connection
 	Channel   *amqp.Channel
 }
+
 //Subscribe listens to messages from events queue and *todo dispatches command
 func (ad AmqpDispatcher) Subscribe(eventqueue string) error {
 	deliveries, _ := ad.Channel.Consume(
@@ -33,12 +35,12 @@ func (ad AmqpDispatcher) Subscribe(eventqueue string) error {
 		nil)
 
 	go func() {
-		for msg := range deliveries{
+		for msg := range deliveries {
 			//Generic JSON Command goes here and Create/Update/DeleteSensor command formed
 			event := SensorCreated{}
 			err := json.Unmarshal(msg.Body, &event)
 			if err != nil {
-				log.Println("Message could not be unpacked",err)
+				log.Println("Message could not be unpacked", err)
 			}
 		}
 	}()
@@ -106,7 +108,7 @@ func NewDispatcher(url string) *AmqpDispatcher {
 
 	return ad
 }
-func (ad *AmqpDispatcher) Shutdown(){
+func (ad *AmqpDispatcher) Shutdown() {
 	ad.Conn.Close()
 }
 
@@ -131,11 +133,11 @@ func EventFromCommand(command Command) Event {
 	case UpdateSensor:
 		cmd := command.(UpdateSensor)
 		evt := SensorUpdated{
-			Name: cmd.Name,
+			Name:       cmd.Name,
 			Sensortype: cmd.Sensortype,
 			EventModel: EventModel{
-				ID: cmd.GetId(),
-				Version: 0, //Logic will update in Apply
+				ID:        cmd.GetId(),
+				Version:   0, //Logic will update in Apply
 				UpdatedAt: time.Now(),
 			},
 		}
