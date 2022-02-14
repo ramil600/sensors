@@ -35,6 +35,7 @@ func (ad AmqpDispatcher) Subscribe(eventqueue string) error {
 		nil)
 
 	go func() {
+		//new commit
 		for msg := range deliveries {
 			//Generic JSON Command goes here and Create/Update/DeleteSensor command formed
 			event := SensorCreated{}
